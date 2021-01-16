@@ -36,7 +36,7 @@ print(xVars)
 yVars = mult_data[['28 days']]
 print(yVars)
 
-X_train, X_test, y_train, y_test = train_test_split(xVars, yVars, test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(xVars, yVars, test_size=0.1)
 
 X_train = preprocessing.scale(X_train)
 X_test = preprocessing.scale(X_test)
@@ -50,13 +50,13 @@ model.add(Dense(64, activation='relu'))
 model.add(Dense(64, activation='relu'))
 model.add(Dense(64, activation='relu'))
 model.add(Dense(1,))
-model.compile(Adam(lr=0.1), 'mean_squared_error')
+model.compile(Adam(lr=0.0003), 'mean_squared_error')
 
 # Pass several parameters to 'EarlyStopping' function and assigns it to 'earlystopper'
 earlystopper = EarlyStopping(monitor='val_loss', min_delta=0, patience=15, verbose=1, mode='auto')
 
 # Fits model over 2000 iterations with 'earlystopper' callback, and assigns it to history
-history = model.fit(X_train, y_train, epochs = 5000, validation_split = 0.2,shuffle = True, verbose = 0, callbacks = [earlystopper])
+history = model.fit(X_train, y_train, epochs = 5000, validation_split = 0.1,shuffle = True, verbose = 0, callbacks = [earlystopper])
 #history = model.fit(X_train, y_train, epochs = 5000, validation_split = 0.2,shuffle = True, verbose = 0)
 
 # Plots 'history'
@@ -75,7 +75,8 @@ y_test_pred = model.predict(X_test)
 print("The R2 score on the Train set is:\t{:0.3f}".format(r2_score(y_train, y_train_pred)))
 print("The R2 score on the Test set is:\t{:0.3f}".format(r2_score(y_test, y_test_pred)))
 
-inputprediction = [[128, 250, 1033.6, 723.2]]
+inputprediction = [[200, 383, 897.6, 734.4]]
+inputprediction = preprocessing.scale(inputprediction)
 prediction = model.predict(inputprediction)
 print(prediction)
 
